@@ -1,4 +1,12 @@
 #include "components.h"
+#include <array>
+#include <utility>
+using std::array;
+using std::pair;
+
+array<pair<int,int>, 12> keypadLayout;
+const char keys[] = {'1','2','3','4','5','6','7','8','9','*','0','#'};
+
 
 void Keypad::startUp(int amount, int keyPins[]) {
     for (int i = 0; i < amount; i++) {
@@ -13,22 +21,17 @@ void Keypad::define(int p1,int p2,int p3,int p4,int p5,int p6,int p7) {
     startUp(7, temp);
 }
 
-void Keypad::define(int p1,int p2,int p3,int p4,int p5,int p6,int p7,int p8) {
-    int temp[] = {p1,p2,p3,p4,p5,p6,p7,p8};
-    startUp(8, temp);
-}
-
 int Keypad::getAmount() { return amount; }
 int Keypad::getPin(int index) { 
     return pins[index]; 
 }
 
 void Keypad::keyMaping() {
-    const char keys[] = {'1','2','3','4','5','6','7','8','9','*','0','#'};
-
+    
     Serial.print("Mapping started, follow the instrusctions to map keypad correctly:");
     
-    for (char key : keys) {
+    for (int i = 0; i < 12; i++) {
+        char key = keys[i];
         Serial.print("Please press ");
         Serial.println(key);
 
@@ -62,10 +65,7 @@ void Keypad::keyMaping() {
                         int drivePin = getPin(currentPin);
 
                         // The actaully mapping
-                        if (key == "1"):
-                            key1 = [drivePin, readPin]
-
-
+                        keypadLayout[i] = {readPin, drivePin};
 
                         keyScanned = true;
 
