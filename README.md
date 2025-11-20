@@ -9,9 +9,8 @@
 Keypad Keypad;
 
 void setup() {
-    Serial.begin(115200);
-    Keypad.define(2,3,4,5,6,7,8);
-    Keypad.keyMaping();
+    Keypad.define(2,3,4,5,6,7,8); // the numbers are pins going from keypad too the arduino these do not need to be sorted
+    Keypad.keyMaping(); // this maps the keypad, no other code will run whilest it's mapping, follow the instructions in serial monitor
 }
 ```
 
@@ -19,8 +18,8 @@ void setup() {
 
 ```cpp
 void loop() {
-    char key = Keypad.getKey();
-    if (key) {
+    char key = Keypad.getKey(); // get's the key this code outputs 0 so you'll get nothing outputed but the chat might still be spammed
+    if (key) { // that's why you need this to check if there is something in there
         Serial.println(key);
     }
 }
@@ -28,6 +27,7 @@ void loop() {
 
 ## Commands
 
-<div align="center"><strong>define(...)</strong> sets keypad pins</div>
-<div align="center"><strong>keyMaping()</strong> loads layout</div>
-<div align="center"><strong>getKey()</strong> returns pressed key</div>
+**define(...)** sets the pins connected to the keypad  
+**keyMaping()** starts the mapping process and guides you in Serial Monitor  
+**getKey()** returns the pressed key or 0 when nothing is pressed  
+
