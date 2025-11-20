@@ -53,7 +53,7 @@ void Keypad::keyMaping() {
                 // ---- Changes the pins to the states i want (thease are indexes not actuall pin nr) ----
                 for (int testingPin = 0; testingPin < count; testingPin++) {
                     int actuallPin = getPin(testingPin);
-                
+                    
                     if (testingPin == currentPin) {
                         pinMode(actuallPin, OUTPUT);
                         digitalWrite(actuallPin, LOW);
@@ -70,7 +70,7 @@ void Keypad::keyMaping() {
                     if (digitalRead(readPin) == LOW) {
                         int drivePin = getPin(currentPin);
 
-                        // The actaully mapping
+                        // The actaullal mapping
                         keypadLayout[i].readPin  = readPin;
                         keypadLayout[i].drivePin = drivePin;
 
