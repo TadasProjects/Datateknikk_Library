@@ -1,8 +1,8 @@
-# Keypad Library
+# Components Library
 
-<div align="center"><strong>Simple keypad setup and usage</strong></div>
+<div align="center"><strong>Keypad and OLED usage</strong></div>
 
-## Setup
+## Keypad Setup
 
 ```cpp
 #include "components.h"
@@ -14,20 +14,49 @@ void setup() {
 }
 ```
 
-## Use
+## Keypad Use
 
 ```cpp
 void loop() {
-    char key = Keypad.getKey(); // get's the key this code outputs 0 so you'll get nothing outputed but the chat might still be spammed
-    if (key) { // that's why you need this to check if there is something in there
+    char key = Keypad.getKey(); // gets the key, this code outputs 0 so nothing will print unless something is pressed
+    if (key) { // prevents spam from empty reads
         Serial.println(key);
     }
 }
 ```
 
-## Commands
+## Keypad Commands
 
 **define(...)** sets the pins connected to the keypad  
 **keyMaping()** starts the mapping process and guides you in Serial Monitor  
 **getKey()** returns the pressed key or 0 when nothing is pressed  
 
+---
+
+## OLED Setup
+
+Choose which backend you want to use. Only one can be active.
+
+```cpp
+// Choose backend HERE
+#define OLED_BACKEND_TEXT
+// or
+// #define OLED_BACKEND_ADAFRUIT
+```
+
+## OLED Use
+
+Call `oledStartup()` once in `setup()` to initialize and prepare the display.
+
+For all printing and drawing commands, use the documentation for the backend you selected.
+
+### Commands for SSD1306Ascii  
+Official documentation:  
+https://github.com/greiman/SSD1306Ascii#api-reference
+
+### Commands for Adafruit SSD1306 and GFX  
+Adafruit SSD1306 API:  
+https://github.com/adafruit/Adafruit_SSD1306  
+
+Adafruit GFX API (text, shapes, cursor control):  
+https://github.com/adafruit/Adafruit-GFX-Library#graphics-primitives-and-text
