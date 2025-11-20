@@ -1,14 +1,17 @@
 #include "components.h"
-#include <array>
-#include <utility>
-using std::array;
-using std::pair;
 
-array<pair<int,int>, 12> keypadLayout;
+struct PinPair {
+    int readPin;
+    int drivePin;
+};
+
+PinPair keypadLayout[12];
 const char keys[] = {'1','2','3','4','5','6','7','8','9','*','0','#'};
 
 
 void Keypad::startUp(int amount, int keyPins[]) {
+    this->amount = amount;
+
     for (int i = 0; i < amount; i++) {
         pins[i] = keyPins[i];
         pinMode(pins[i], INPUT_PULLUP);
@@ -22,18 +25,21 @@ void Keypad::define(int p1,int p2,int p3,int p4,int p5,int p6,int p7) {
 }
 
 int Keypad::getAmount() { return amount; }
-int Keypad::getPin(int index) { 
-    return pins[index]; 
+
+
+int Keypad::getPin(int index) {
+    if (index < 0 || index >= amount) return -1;
+    return pins[index];
 }
 
 void Keypad::keyMaping() {
     
-    Serial.print("Mapping started, follow the instrusctions to map keypad correctly:");
+    Serial.println("Mapping started, follow the instrusctions to map keypad correctly:");
     
     for (int i = 0; i < 12; i++) {
         char key = keys[i];
-        Serial.print("Please press ");
-        Serial.println(key);
+        Serial.println("Please press: ");
+        Serial.print(key);
 
         // ---- This bad boy, uhh, he let's the human brain catch up, by waiting for input. ----
         // --- (thease are indexes not actuall pin nr) ---
@@ -65,7 +71,8 @@ void Keypad::keyMaping() {
                         int drivePin = getPin(currentPin);
 
                         // The actaully mapping
-                        keypadLayout[i] = {readPin, drivePin};
+                        keypadLayout[i].readPin  = readPin;
+                        keypadLayout[i].drivePin = drivePin;
 
                         keyScanned = true;
 
@@ -82,4 +89,31 @@ void Keypad::keyMaping() {
             delay(5);
         }
     }
+}
+
+char Keypad::getKey(){
+    const int count = getAmount();
+
+    startUp(count, pins);
+
+    for (int i = 0; i < 12; i++) {
+        int drivePin = keypadLayout[i].drivePin;
+        int readPin  = keypadLayout[i].readPin;
+
+        pinMode(drivePin, OUTPUT);
+        digitalWrite(drivePin, LOW);
+
+        if (digitalRead(readPin) == LOW) {
+            while (digitalRead(readPin) == LOW) {
+                delay(5);
+            }
+
+            pinMode(drivePin, INPUT_PULLUP);
+            return keys[i];  
+        }
+
+        pinMode(drivePin, INPUT_PULLUP);
+    }
+
+    return 0;  // no key pressed
 }

@@ -18,16 +18,14 @@ public:
     int getPin(int index);
 
     void keyMaping();
+    char getKey();
 };
 
 // Frontend (empty logic for now)
 class Frontend {
 private:
-    Keypad &kp;
 public:
-    Frontend(Keypad &ref);
-    void init();
-    void update();
 };
+
 
 #endif
