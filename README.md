@@ -60,3 +60,43 @@ https://github.com/adafruit/Adafruit_SSD1306
 
 Adafruit GFX API (text, shapes, cursor control):  
 https://github.com/adafruit/Adafruit-GFX-Library#graphics-primitives-and-text
+
+
+## BME and ENS Example
+
+```cpp
+#include <components.h>
+
+void setup() {
+    Serial.begin(115200);
+
+    oledStartup();  // starts the OLED
+    bmeStartup();   // starts the BME280 sensor
+    ensStartup();   // starts the ENS160 air quality sensor
+}
+
+void loop() {
+    float t = bme.readTemperature();
+    float h = bme.readHumidity();
+    float p = bme.readPressure() / 100.0F;
+
+    uint16_t tvoc = ens.getTVOC();
+    uint16_t eco2 = ens.getECO2();
+    uint8_t aqi   = ens.getAQI();
+
+}
+```
+
+## Sensor Commands
+
+### BME280  
+**bme.readTemperature()** returns temperature in C  
+**bme.readHumidity()** returns humidity in percent  
+**bme.readPressure()** returns pressure in Pa  
+
+### ENS160  
+**ens.getTVOC()** returns total volatile compounds in ppb  
+**ens.getECO2()** returns equivalent CO2 in ppm  
+**ens.getAQI()** returns air quality index  
+
+
