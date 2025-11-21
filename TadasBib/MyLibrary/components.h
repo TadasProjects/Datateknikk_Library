@@ -3,12 +3,29 @@
 
 #include <Arduino.h>
 
-// Choose backend HERE (one place)
+// -------------- BME og ENS --------------
+#include <Adafruit_BME280.h>
+#include <SparkFun_ENS160.h>
+
+extern Adafruit_BME280 bme;   // - global BME sensor
+
+// ---- Starts the BME if it's connected
+void bmeStartup();
+
+extern SparkFun_ENS160 ens;   // - global ENS sensor
+
+// ---- Starts the ENS if it's connected
+void ensStartup();
+// -------------- ---------- --------------
+
+
+
+// -------------- -- OLED -- --------------
+
+// --- Choose backend HERE 
 #define OLED_BACKEND_TEXT
-// or:
 // #define OLED_BACKEND_ADAFRUIT
 
-// choose backend
 #ifdef OLED_BACKEND_TEXT
     #include <SSD1306Ascii.h>
     #include <SSD1306AsciiWire.h>
@@ -20,6 +37,11 @@
     extern Adafruit_SSD1306 display;
     void oledStartup();
 #endif
+
+// -------------- ---------- --------------
+
+
+// -------------- - KEYPAD - --------------
 
 class Keypad {
 private:
@@ -44,5 +66,7 @@ class Frontend {
 private:
 public:
 };
+
+// -------------- ---------- --------------
 
 #endif
