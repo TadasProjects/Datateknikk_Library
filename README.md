@@ -100,3 +100,71 @@ void loop() {
 **ens.getAQI()** returns air quality index  
 
 
+## RFID example
+
+```cpp
+#include <SPI.h>
+#include <MFRC522.h>
+#include <components.h>
+
+#define SS_PIN 10
+#define RST_PIN 9
+
+MFRC522 rfid(SS_PIN, RST_PIN);
+RFID rfidInfo;
+
+void setup() {
+    Serial.begin(115200);
+
+    SPI.begin();
+    rfid.PCD_Init();
+}
+
+void loop() {
+    if (rfidInfo.isCardPresentReadIt()) {
+        byte* uid = rfid.uid.uidByte;
+        byte  len = rfid.uid.size;
+
+        rfidInfo.findUID();
+
+        if (rfidInfo.doesExist(uid, len)) {
+            Serial.println("Card exist in storage");
+        } else {
+            Serial.println("Card does not exist in storage");
+        }
+
+        // -- addCard and both removeCard checks if card exist for you.
+        if (rfidInfo.addCard(uid, len, 1)) {
+            Serial.println("Added successfully.");
+        } else {
+            Serial.println("Add failed (maybe exists already or full).");
+        }
+
+        if (rfidInfo.removeCard(uid, len)) {
+            Serial.println("Removed successfully by UID.");
+        } else {
+            Serial.println("Remove by UID failed!");
+        }
+    }
+
+    const byte user = 5;
+    if (rfidInfo.removeCard(user)) {
+        Serial.println("Removed user 5 successfully.");
+    } else {
+        Serial.println("Remove by USER 5 failed!");
+    }
+
+    delay(500);
+}
+```
+
+### RFID Commands
+
+**isCardPresentReadIt()** checks for a card and reads its UID  
+**findUID()** prints the UID to Serial  
+**doesExist(uid, len)** checks if a card is stored  
+**addCard(uid, len, userID)** saves a card with an assigned user number  
+**removeCard(uid, len)** removes a card by scanning it  
+**removeCard(userID)** removes a card by its assigned user ID  
+
+
