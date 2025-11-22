@@ -61,12 +61,36 @@ public:
     char getKey();
 };
 
+// -------------- ---------- --------------
+
+
+// -------------- -- RFID -- --------------
+
+
+#include <SPI.h>
+#include <MFRC522.h>
+
+extern MFRC522 rfid;
+
+class RFID {
+public:
+    bool isCardPresentReadIt();
+    void findUID();
+
+    bool doesExist(const byte *uid, byte len);
+    bool addCard(const byte *uid, byte len, byte user);
+    bool removeCard(const byte *uid, byte len);
+    bool removeCard(byte user);
+};
+
+// -------------- ---------- --------------
+
+
 // Frontend (empty logic for now)
 class Frontend {
 private:
 public:
 };
 
-// -------------- ---------- --------------
 
 #endif
