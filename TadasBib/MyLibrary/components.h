@@ -86,11 +86,35 @@ public:
 // -------------- ---------- --------------
 
 
-// Frontend (empty logic for now)
-class Frontend {
+// -------------- --  PIR -- --------------
+
+
+class PIR {
 private:
+    int pinNumber;
+    int state = LOW;
+
 public:
+    void define(int pirPin);
+
+    int motionDetected();
 };
+
+
+// -------------- ---------- --------------
+
+
+// -------------- - HELPER - --------------
+
+class DelayMillis {
+private:
+    unsigned long lastTime = 0;
+
+public:
+    bool delayMillis(unsigned long ms);
+};
+
+// -------------- ---------- --------------
 
 
 #endif
