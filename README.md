@@ -168,3 +168,70 @@ void loop() {
 **removeCard(userID)** removes a card by its assigned user ID  
 
 
+## PIR Usage
+
+```cpp
+#include <components.h>
+
+PIR pir;
+
+void setup() {
+    Serial.begin(115200);
+    pir.define(4);
+}
+
+void loop() {
+    int r = pir.motionDetected();
+
+    if (r == 0) {
+        Serial.println("Motion detected");
+    } else if (r == 1) {
+        Serial.println("Motion stopped");
+    }
+}
+```
+
+### PIR Commands
+
+**define(pin)** sets the PIR sensor input pin  
+**motionDetected()** returns  
+0 for motion detected  
+1 for motion ended  
+
+## DelayMillis Usage
+
+```cpp
+#include <components.h>
+
+DelayMillis blink;
+DelayMillis sensor;
+DelayMillis loopBreaker;
+
+void setup() {
+    Serial.begin(115200);
+}
+
+void loop() {
+    if (blink.delayMillis(200)) {
+        Serial.println("Blink event");
+    }
+
+    if (sensor.delayMillis(1000)) {
+        Serial.println("Sensor read");
+    }
+
+    for (int i = 0; i < 500; i++) {
+        if (loopBreaker.delayMillis(300)) {
+            Serial.println("300ms passed, breaking loop");
+            break;
+        }
+    }
+}
+```
+
+### DelayMillis Commands
+
+**delayMillis(ms)** returns true when the time has passed and resets automatically  
+Works in loops, inside for-loops, and can be used as many times as needed  
+
+
